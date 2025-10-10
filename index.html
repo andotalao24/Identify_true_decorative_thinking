@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>True vs Decorative Thinking — Project Page</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <style>
+    body { background:#ffffff; color:#2b2b2b; font-family: 'Segoe UI', Roboto, sans-serif; }
+    .hero {
+      background: linear-gradient(135deg,#dbeafe,#eff6ff);
+      color:#2c3e50;
+      padding-top:2rem;
+      padding-bottom:2rem;
+      box-shadow:0 2px 8px rgba(0,0,0,.08);
+    }
+    .hero .title { font-weight:800; color:#1a1a1a; }
+    .hero .subtitle { color:#444; }
+    .section-title { font-size:2rem; font-weight:700; color:#2c3e50; text-align:center; margin-bottom:1.5rem; position:relative; }
+    .section-title::after { content:""; display:block; width:80px; height:4px; background:#3273dc; margin:0.6rem auto 0; border-radius:3px; }
+    .content-text { max-width:840px; margin:0 auto; font-size:1.075rem; line-height:1.75; }
+    .highlight { background:#f9fbff; border-left:6px solid #3273dc; padding:1.25rem; border-radius:8px; box-shadow:0 3px 10px rgba(0,0,0,.05); }
+    .figure { text-align:center; margin:2rem 0; }
+    .figure .placeholder { border:2px dashed #cfcfcf; padding:2rem; color:#888; font-style:italic; border-radius:12px; background:#fcfcfc; }
+    pre.bibtex { background:#f6f8fa; padding:1rem; border-radius:8px; overflow:auto; border:1px solid #ddd; }
+    footer { background:#f7f7f7; padding:1.5rem 1rem; margin-top:2rem; }
+  </style>
+</head>
+<body>
+  <!-- HERO -->
+  <style>
+    /* Center everything inside the hero container */
+    .hero .container { text-align: center; }
+  
+    /* Authors & affiliations rows: perfectly centered and wrapping nicely */
+    .publication-authors,
+    .publication-affiliations {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: .35rem .6rem;    /* row/column gaps */
+      margin-top: .25rem;
+    }
+    .publication-authors .author-block,
+    .publication-affiliations .author-block {
+      white-space: nowrap;  /* keep names tidy */
+    }
+    .publication-authors sup,
+    .publication-affiliations sup {
+      font-size: .7em;
+      vertical-align: super;
+      color: #6b7280;
+    }
+  
+    /* Centered button row */
+    .button-group.buttons.is-centered {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: .75rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+  </style>
+  
+  <section class="hero is-medium">
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="title is-2">Can Aha Moments Be Fake?</h1>
+        <h2 class="subtitle is-4">Identifying True and Decorative Thinking Steps in Chain-of-Thought</h2>
+  
+        <!-- Authors (centered) -->
+        <div class="is-size-5 publication-authors">
+          <span class="author-block">Jiachen Zhao<sup>1</sup>,</span>
+          <span class="author-block">Yiyou Sun<sup>2</sup>,</span>
+          <span class="author-block">Weiyan Shi<sup>1</sup>,</span>
+          <span class="author-block">Dawn Song<sup>2</sup></span>
+        </div>
+  
+        <!-- Affiliations (centered, mapped by superscripts) -->
+        <div class="is-size-5 publication-affiliations">
+          <span class="author-block"><sup>1</sup> Northeastern University</span>
+          <span class="author-block"><sup>2</sup> UC Berkeley</span>
+        </div>
+  
+        <!-- Buttons (centered) -->
+        <div class="buttons is-centered button-group">
+          <a class="button" href="sandbox:/mnt/data/_mats__cot.pdf" target="_blank">📚 Paper</a>
+          <a class="button" href="https://github.com/andotalao24/Identify_true_decorative_thinking" target="_blank">💻 GitHub</a>
+          <a class="button" href="#bibtex">📝 BibTeX</a>
+        </div>
+      </div>
+    </div>
+  </section>
+    
+
+  <!-- OVERVIEW -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Overview</h2>
+      <div class="content-text">
+        <div class="highlight">
+          <p>
+            Recent large language models (LLMs) can generate long Chain-of-Thought (CoT)
+at test time, enabling them to solve complex tasks. These reasoning traces are often
+assumed as a faithful reflection of LLMs’ internal thinking process, and can be
+used for monitoring LLMs’ unsafe intentions. However, by analyzing the step-wise causality in CoT on a model's prediction using Average Treatment Effect (ATE),
+ we design a <strong>True Thinking Score (TTS)</strong> and show that LLMs often interleave between 
+ <br></br>
+
+ <ul>
+ <li>(1) <strong>true-thinking steps</strong>, which
+are faithfully used to generate model’s final output.</li>
+<li>(2) <strong>decorative-thinking steps</strong>, which give the appearance of reasoning but have minimal causal impact on
+the model’s final output.</li>
+</ul>
+
+</p>
+<br>
+<p> We reveal that only a small subset of the total thinking steps that have relatively high
+  scores and causally drive the final prediction. Furthermore, we identify a <strong>TrueThinking</strong>
+direction in the latent space of LLMs. <em>By steering LLMs' hidden states along or against this direction, we can control
+the model to perform or disregard certain CoT steps when computing the result.</em> Fi-
+nally, we highlight that self-verification steps in CoT can also be decorative, where
+LLMs do not truly check their solution, while steering along the TrueThinking
+direction can force internal reasoning over these steps. Overall, our work reveals
+that LLMs can verbalize reasoning steps without performing them internally, which
+undermines both the efficiency of LLM reasoning and the trustworthiness of CoT.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <figure style="text-align:center; margin:2rem auto; max-width:45%;">
+    <img src="web/teaser.png" alt="Description of image" style="width:100%; height:auto; border-radius:6px;">
+    <figcaption style="
+    max-width: 666px;
+    margin: 0.5rem auto 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #666;
+  ">
+    Figure 1:  
+    We find that reasoning steps in CoT may not always be true thinking but instead function as decorative thinking 
+    where the model internally is not using those steps to compute its answer. Taking self-verification steps as an example 
+    (often called ``Aha moments'' where LLMs rethink their solution with phrases like ``wait''), 
+    we first randomly replace the numerical values in the reasoning steps preceding the ``Aha moment'', 
+    and then re-prompt the model for the answer using the modified CoT. In the left example, despite the correct reasoning in the self-verification steps, 
+    the model disregards them and still outputs the wrong result. In contrast, in the right example, the model truly follows its self-verification and arrives at the correct answer.
+  </figcaption>
+</figure>
+
+
+
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">True-Thinking Score (TTS)</h2>
+    <div class="content-text">
+      <p>
+        The <strong>True-Thinking Score (TTS)</strong> measures how much a reasoning step <code><em>s</em></code> contributes causally to the model’s prediction. 
+       By adapting the causality evaluation framework of Average Treatment Effect (ATE), we compare the model’s confidence when the step is kept (<code>X=1</code>) versus when it is replaced by a perturbed version (<code>X=0</code>) (e.g., adding small random offsets to the numbers in the step), 
+        under both intact context (<code>C=1</code>) and perturbed context (<code>C=0</code>). Formally:
+      </p>
+
+      <div class="box has-text-centered" style="margin:1rem auto; max-width:600px;">
+        <p><strong>TTS(s) = 0.5 × ( |ATE(1)| + |ATE(0)| )</strong></p>
+        <p>
+          <strong>
+            TTS(s) = 0.5 × ( | P(Y=1 | C=1, do(X=1)) − P(Y=1 | C=1, do(X=0)) | <br>
+            + | P(Y=1 | C=0, do(X=1)) − P(Y=1 | C=0, do(X=0)) | )
+          </strong>
+        </p>
+      </div>
+
+      <p>
+        Here, <code>X=1</code> means the model sees the original step, while <code>X=0</code> means the step is perturbed. 
+        <code>C=1</code> keeps the steps before <code><em>s</em></code> intact as a step may affect the model's prediction jointly with those context steps; <code>C=0</code> perturbs those context steps to measure the impact of the step on the model's prediction in isolation. The final score is the average of the two ATE scores.  
+        Intuitively, a causally important step should introduce a large change in the model's confidence due to the perturbation we apply. A high TTS indicates the step is truly used by the model; a low TTS suggests it is decorative. 
+      </p>
+    </div>
+  </div>
+</section>
+
+
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Evaluation Results of Step-wise Causality in CoT</h2>
+      <div class="content-text">
+  
+        <!-- Figures row -->
+        <div class="columns is-centered">
+          <div class="column is-one-third has-text-centered">
+            <figure>
+              <img src="web/fig_a_eval.png" alt="Distribution of TTS scores" style="max-width:100%; height:auto; border-radius:6px;">
+              <figcaption class="is-size-7 has-text-grey">Figure 2. (a) Dataset-level distribution of the TTS score on AIME dataset.</figcaption>
+            </figure>
+          </div>
+          <div class="column is-one-third has-text-centered">
+            <figure>
+              <img src="web/fig_b_eval.png" alt="Distribution of ATE(c=1) vs ATE(c=0)" style="max-width:100%; height:auto; border-radius:6px;">
+              <figcaption class="is-size-7 has-text-grey">Figure 2. (b) Distribution of ATE(c=1) and ATE(c=0) scores.</figcaption>
+            </figure>
+          </div>
+          <div class="column is-one-third has-text-centered">
+            <figure>
+              <img src="web/fig_c_eval.png" alt="Example CoT case for TTS" style="max-width:100%; height:auto; border-radius:6px;">
+              <figcaption class="is-size-7 has-text-grey">Figure 2. (c) Example CoT case and average TTS by step percentile on AIME dataset.</figcaption>
+            </figure>
+          </div>
+        </div>
+  
+ 
+  
+        <h3 class="is-size-5 has-text-weight-semibold">The distribution of TTS is long-tailed.</h3>
+        <p>
+          As shown in Figure 2. (a), most steps have low scores, while only a small fraction achieve very high scores. 
+          On the AIME dataset for Qwen-2.5, the mean is around 0.03: only 6.4% of steps exceed 0.3 and just 2.3% surpass 0.7. 
+          This suggests that only a handful of verbalized steps are truly critical, while many others are decorative. 
+          Moreover, Figure 2. (b) shows that relying only on intact context (<code>c=1</code>) can miss true-thinking steps that become visible under perturbed context (<code>c=0</code>). 
+          Steering experiments confirm that evaluations based solely on intact context can be misleading.
+        </p>
+  
+        <h3 class="is-size-5 has-text-weight-semibold">True- and decorative-thinking steps are interleaved.</h3>
+        <p>
+          As seen in Figure 2. (c), steps with high TTS appear throughout the CoT, though later steps tend to score higher on average. 
+          This shows that labeling an entire CoT as “faithful” or “unfaithful” is overly coarse. 
+          Our results also suggest that task difficulty does not guarantee more faithful reasoning: 
+          even on challenging datasets like AIME, many steps remain decorative, mirroring patterns on simpler math tasks.
+        </p>
+  
+        <h3 class="is-size-5 has-text-weight-semibold">Self-verification steps can be decorative.</h3>
+        <p>
+          Self-verification (“aha moment”) steps are like “Wait, let me recompute...” where LLMs are trying to refine, check or alternate their solution. 
+          However, TTS reveals that many can be decorative: e.g., 12% of self-verification steps for Qwen-2.5 and 21% for Nemotron score below 0.005. 
+          In such cases, perturbing earlier context flips correct answers to wrong ones, while the self-check step itself contributes little. 
+          This raises concerns about the efficiency of reasoning, since models may appear to self-verify without actually doing so.  An example is shown in Figure 3. 
+          More examples with different reasoning behaviors are provided in the <a href="#initial-step-examples">Labeled Initial-Step Examples</a> section.
+        </p>
+  
+      </div>
+    </div>
+  </section>
+
+
+  
+
+  <figure style="text-align:center; margin:2rem auto; max-width:40%;">
+      <img src="web/example.PNG" alt="Example CoT case for TTS" style="width:100%; height:auto; border-radius:6px;">
+      <figcaption class="is-size-7 has-text-grey" style="margin-top:0.5rem; text-align:left;">Figure 3: Example of unfaithful self-verification steps (highlighted in blue) where the TTS score
+        of each step is found smaller than 0.005. Low TTS indicates that those steps are not truly engaged in
+        computation; rather, these reasoning steps are likely to be decorative and function as an appearance
+        of self-verification, contributing minimally to the model's final prediction.</figcaption>
+    </figure>
+
+ 
+
+  <!-- ======================= STEERING SECTION ======================= -->
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">True Thinking Can Be Mediated by a Steering Direction</h2>
+    <div class="content-text">
+
+
+      <p>
+        We empirically show that <strong>whether an LLM truly reasons through a verbalized step or internally disregards it
+        can be mediated by a steering direction in latent space</strong>. We first compute a
+        <strong>TrueThinking direction</strong> per layer by subtracting mean hidden states of high-TTS from low-TTS steps.
+      </p>
+
+      
+
+
+      <div class="math-section" style="max-width:800px;margin:0 auto;text-align:center;padding:12px 16px;">
+        <!-- Load MathJax once per page -->
+        <script>
+          window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] } };
+        </script>
+        <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <div class="eq" style="margin:14px 0;">
+          <div style="font-size:1.05rem;opacity:.85;margin-bottom:6px;">Direction at layer \(l\)</div>
+          <div style="font-size:1.25rem;">
+            $$ v^{l}_{\textsf{TrueThinking}} \;=\; \mu^{l}_{\text{TT}} - \mu^{l}_{\text{DT}} \tag{1} $$
+          </div>
+        </div>
+      
+
+
+
+        <div class="eq" style="margin:18px 0;">
+          <div style="font-size:1.05rem;opacity:.85;margin-bottom:6px;">Activation addition (steering)</div>
+          <div style="font-size:1.25rem;">
+            $$ \bar{h}^{l} \;=\; h^{l} + v^{l}_{\textsf{TrueThinking}} \tag{2} $$
+            <div style="font-size:.95rem;opacity:.8;margin-top:6px;">
+              (applied to all tokens in the target step)
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-text">
+        <p>  For steering at test time, we modify the residual stream for the hidden state of a test step in the example by using
+          activation addition at a single layer \(l\) to all tokens
+          in the step.
+        </p>
+        </div>
+
+      <br>
+      <h3 class="is-size-5 has-text-weight-semibold">Causal Tests</h3>
+      <p class="has-text-grey-dark" style="margin-bottom: 1.5rem;">
+        Two causal steering tests to validate the identified TrueThinking direction:
+      </p>
+      
+      <div class="columns is-variable is-4">
+        <div class="column">
+          <div class="box has-background-info-light" style="border-left: 6px solid #3273dc; height: 100%;">
+            <div class="content">
+              <h4 class="has-text-weight-bold has-text-info-dark" style="margin-bottom: 0.75rem;">
+                🧪 Test A: Engagement Test
+              </h4>
+              <p class="has-text-weight-semibold has-text-grey-dark" style="margin-bottom: 0.5rem;">
+                Can steering make the model think through a step it normally ignores?
+              </p>
+              <p class="is-size-7 has-text-grey">
+                We focus on cases where the model normally ignores the error we inject in the perturbed step and outputs the right answer. 
+                We examine whether steering can make the model think through the perturbed step to follow injected errors and thus, flip the right answer to the wrong answer.
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="column">
+          <div class="box has-background-warning-light" style="border-left: 6px solid #ff9500; height: 100%;">
+            <div class="content">
+              <h4 class="has-text-weight-bold has-text-warning-dark" style="margin-bottom: 0.75rem;">
+                🔄 Test B: Disengagement Test
+              </h4>
+              <p class="has-text-weight-semibold has-text-grey-dark" style="margin-bottom: 0.5rem;">
+                Can reverse steering make the model disregard a step internally?
+              </p>
+              <p class="is-size-7 has-text-grey">
+                We focus on cases where the model normally thinks through the perturbed step and outputs the wrong answer. 
+                We examine whether steering can make the model disregard the perturbed step and flip the wrong answer to the right answer.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="notification is-primary is-light" style="margin-top: 1.5rem; border-radius: 12px;">
+        <div class="content has-text-centered">
+          <p class="has-text-weight-semibold has-text-primary-dark">
+           In both cases, flipping from correct→incorrect or incorrect→correct answers after steering 
+            demonstrates that we can <em>causally mediate reasoning engagement</em>.
+          </p>
+        </div>
+      </div>
+
+      <figure style="text-align:center; margin:2rem 0;">
+        <img src="web/main_table.png" alt="main table" style="max-width:80%; margin:0 auto;height:auto; border-radius:6px;">
+        <figcaption class="is-size-7 has-text-grey">Table 1: Top-1 flip rate among all layers (%) $\uparrow$ on Engagement Test (ET) and Disengagement Test (DT). 
+          We use flip rate as the metric, measuring how often steering changes the model's initial prediction. 
+          AMC dataset is in-domain evaluation where TrueThinking directions are extracted, while the other two datasets are for out-of-domain evaluation. </figcaption>
+      </figure>
+
+      
+      
+      <section class="py-4">
+        <div class="content">
+          <h3 class="is-size-5 has-text-weight-semibold">Steering Reveals a Latent Signal of Thinking</h3>
+          <p>
+            As shown in Table 1, steering along the <em>TrueThinking</em> direction reliably flips predictions in both causal tests, 
+            while steering in the reverse direction suppresses the model’s use of the target reasoning step. 
+            These effects are far stronger than those of random vectors, confirming that the identified direction 
+            captures a <strong>genuine internal representation of reasoning</strong> rather than noise.
+          </p>
+      
+      
+          <p>
+            Experiments across datasets further show that <strong>the latent signal controlling step engagement is universal</strong>. 
+            A direction extracted on <em>AMC</em> generalizes effectively to <em>MATH</em> and <em>AIME</em>, 
+            revealing a model-internal mechanism of thinking rather than a dataset-specific artifact. 
+            As shown in Figure 4, in the Qwen models, layers 15–22 consistently yield the strongest intervention performance, 
+            suggesting that <strong>intermediate layers concentrate latent reasoning</strong>.
+          </p>
+        </div>
+      </section>
+
+
+      <figure style="text-align:center; margin:2rem 0;">
+        <img src="web/steering_layer.PNG" alt="steering layer" style="max-width:80%; margin:0 auto;height:auto; border-radius:6px;">
+        <figcaption class="is-size-7 has-text-grey"> Figure 4: cross-domain results, where the TrueThinking direction is extracted on AMC and applied to MATH and AIME.  </figcaption>
+      </figure>
+
+
+      <p>
+        <b>TrueThinking Direction Influences Attention.</b>  
+        Steering along the <em>TrueThinking</em> direction increases a model’s attention to reasoning steps, while steering in the reverse direction decreases it.  Example attention maps are shown in Figure 5.
+        Those results suggest that the TrueThinking direction may control the engagement of reasoning steps by modulating attention to the step.
+        However, the true-thinking behavior cannot be reproduced by directly scaling attention weights as shown in Table 1. It may reveal a <strong>directional reasoning circuit</strong>: LLMs decide whether to engage in reasoning before modulating attention, a behavior that cannot be reproduced by directly scaling attention weights.</p>
+        </p>
+      
+        
+
+      <figure style="text-align:center; margin:2rem 0;">
+        <img src="web/attn.png" alt="attn" style="max-width:80%; margin:0 auto;height:auto; border-radius:6px;">
+        <figcaption class="is-size-7 has-text-grey">Figure 5: Normalized attention scores of the step in Engagement Test (ET) and Disengagement Test (DT) before and after steering.
+           (a–b) Applying the TrueThinking direction to a step increases the model’s attention to it.
+            (c–d) Applying the reverse TrueThinking direction decreases the model’s attention. </figcaption>
+      </figure>
+
+
+
+      <h3 class="is-size-5 has-text-weight-semibold">Steering Decorative Self-Verification</h3>
+      <p>
+        Self-verification steps (e.g., “Wait, let me check…”) can appear logical yet remain <strong>decorative</strong>, 
+        having little influence on the model’s internal reasoning.  By steering along the <em>TrueThinking</em> direction during these self-check steps, 
+        we can force the model to truly reason through them and often 
+        restore correct answers that were otherwise lost under perturbations.
+        Steering along the <em>TrueThinking</em> direction can restore correct answers in up to <strong>52%</strong> of initially unfaithful cases.
+      </p>
+
+
+
+
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+
+
+
+<section class="section" id="initial-step-examples">
+  <div class="container">
+    <h2 class="section-title">Labeled Initial-Step Examples</h2>
+    <div class="content-text">
+
+      <div class="box" style="border-radius:12px; box-shadow:0 3px 10px rgba(0,0,0,.05);">
+        <div class="is-flex is-align-items-center is-justify-content-space-between" style="gap:.75rem; flex-wrap:wrap;">
+          <div class="is-size-6 has-text-weight-semibold">Uncertainty-estimation example <span class="has-text-grey"></span></div>
+          <div>
+            <span class="tag is-light">Label</span>
+            <span class="tag is-dark is-light has-text-weight-semibold">Uncertainty-estimation </span>
+          </div>
+        </div>
+        <div class="notification is-light" style="margin:1rem 0 .75rem; border-left:6px solid #3273dc; border-radius:10px;">
+          <div class="is-size-7 has-text-grey" style="margin-bottom:.25rem;">Context (last two sentences)</div>
+          <div class="is-family-monospace" style="white-space:pre-wrap;">Another way is to divide the quadrilateral into two triangles and find the area of each triangle, then add them up. Looking at the points, maybe I can split the quadrilateral along the x-axis</div>
+        </div>
+        <div class="notification is-danger is-light" style="margin:0; border-left:6px solid #ff3860; border-radius:10px;">
+          <div class="is-size-7 has-text-grey" style="margin-bottom:.25rem;">Initial step — <span class="has-text-weight-semibold">Uncertainty-estimation</span></div>
+          <div class="is-family-monospace" style="white-space:pre-wrap;"> The points (-1, 0) and (2, 0) are on the x-axis, so the quadrilateral is split into two triangles: one above the x-axis and one below. 
+
+Wait, actually, the point (0, 1) is above the x-axis, and (0, -3) is below.  So, if I connect (-1, 0) to (0, 1) to (2, 0) to (0, -3) and back to (-1, 0), it&#x27;s a quadrilateral that crosses over the x-axis. 
+
+Alternatively, maybe I can split it into two triangles: one with vertices (-1, 0), (0, 1), (2, 0) and another with vertices (2, 0), (0, -3), (-1, 0).  Wait, but that might not cover the entire quadrilateral. 
+
+Alternatively, perhaps split it into triangles with a common diagonal.  Let me see. 
+
+If I connect (0, 1) to (0, -3), that&#x27;s a vertical line along the y-axis.  Then, the quadrilateral is split into two parts: one on the left side of the y-axis and one on the right. 
+
+But actually, the points are (-1, 0), (0, 1), (2, 0), (0, -3)</div>
+        </div>
+      </div>
+    
+      <div class="box" style="border-radius:12px; box-shadow:0 3px 10px rgba(0,0,0,.05);">
+        <div class="is-flex is-align-items-center is-justify-content-space-between" style="gap:.75rem; flex-wrap:wrap;">
+          <div class="is-size-6 has-text-weight-semibold">Uncertainty-estimation example <span class="has-text-grey"> </span></div>
+          <div>
+            <span class="tag is-light">Label</span>
+            <span class="tag is-dark is-light has-text-weight-semibold">Uncertainty-estimation </span>
+          </div>
+        </div>
+        <div class="notification is-light" style="margin:1rem 0 .75rem; border-left:6px solid #3273dc; border-radius:10px;">
+          <div class="is-size-7 has-text-grey" style="margin-bottom:.25rem;">Context (last two sentences)</div>
+          <div class="is-family-monospace" style="white-space:pre-wrap;">Looking at the points, maybe I can split the quadrilateral along the x-axis. The points (-1, 0) and (2, 0) are on the x-axis, so the quadrilateral is split into two triangles: one above the x-axis and one below</div>
+        </div>
+        <div class="notification is-danger is-light" style="margin:0; border-left:6px solid #ff3860; border-radius:10px;">
+          <div class="is-size-7 has-text-grey" style="margin-bottom:.25rem;">Initial step — <span class="has-text-weight-semibold">Uncertainty-estimation</span></div>
+          <div class="is-family-monospace" style="white-space:pre-wrap;">
+
+Wait, actually, the point (0, 1) is above the x-axis, and (0, -3) is below.  So, if I connect (-1, 0) to (0, 1) to (2, 0) to (0, -3) and back to (-1, 0), it&#x27;s a quadrilateral that crosses over the x-axis. 
+
+Alternatively, maybe I can split it into two triangles: one with vertices (-1, 0), (0, 1), (2, 0) and another with vertices (2, 0), (0, -3), (-1, 0).  Wait, but that might not cover the entire quadrilateral. 
+
+Alternatively, perhaps split it into triangles with a common diagonal.  Let me see. 
+
+If I connect (0, 1) to (0, -3), that&#x27;s a vertical line along the y-axis.  Then, the quadrilateral is split into two parts: one on the left side of the y-axis and one on the right. 
+
+But actually, the points are (-1, 0), (0, 1), (2, 0), (0, -3)</div>
+        </div>
+      </div>
+    
+      <div class="box" style="border-radius:12px; box-shadow:0 3px 10px rgba(0,0,0,.05);">
+        <div class="is-flex is-align-items-center is-justify-content-space-between" style="gap:.75rem; flex-wrap:wrap;">
+          <div class="is-size-6 has-text-weight-semibold">Backtracking example <span class="has-text-grey"> </span></div>
+          <div>
+            <span class="tag is-light">Label</span>
+            <span class="tag is-dark is-light has-text-weight-semibold">Backtracking</span>
+          </div>
+        </div>
+        <div class="notification is-light" style="margin:1rem 0 .75rem; border-left:6px solid #3273dc; border-radius:10px;">
+          <div class="is-size-7 has-text-grey" style="margin-bottom:.25rem;">Context (last two sentences)</div>
+          <div class="is-family-monospace" style="white-space:pre-wrap;">So, putting it all together, 20% of 50% of 80 is 8. That seems correct, but let me verify it another way to make sure I didn&#x27;t make a mistake</div>
+        </div>
+        <div class="notification is-danger is-light" style="margin:0; border-left:6px solid #ff3860; border-radius:10px;">
+          <div class="is-size-7 has-text-grey" style="margin-bottom:.25rem;">Initial step — <span class="has-text-weight-semibold">Backtracking</span></div>
+          <div class="is-family-monospace" style="white-space:pre-wrap;">
+
+Another approach is to multiply all the percentages together first and then apply them to 80.  So, 20% is 0. 2, and 50% is 0. 5.  Multiplying those together: 0. 2 * 0. 5 = 0. 1</div>
+        </div>
+      </div>
+    
+      <div class="box" style="border-radius:12px; box-shadow:0 3px 10px rgba(0,0,0,.05);">
+        <div class="is-flex is-align-items-center is-justify-content-space-between" style="gap:.75rem; flex-wrap:wrap;">
+          <div class="is-size-6 has-text-weight-semibold">Adding-knowledge example <span class="has-text-grey"></span></div>
+          <div>
+            <span class="tag is-light">Label</span>
+            <span class="tag is-dark is-light has-text-weight-semibold">Adding-knowledge</span>
+          </div>
+        </div>
+        <div class="notification is-light" style="margin:1rem 0 .75rem; border-left:6px solid #3273dc; border-radius:10px;">
+          <div class="is-size-7 has-text-grey" style="margin-bottom:.25rem;">Context (last two sentences)</div>
+          <div class="is-family-monospace" style="white-space:pre-wrap;">Wait, but that might not be accurate. Alternatively, maybe split the quadrilateral into two triangles by drawing a diagonal from (-1, 0) to (2, 0)</div>
+        </div>
+        <div class="notification is-danger is-light" style="margin:0; border-left:6px solid #ff3860; border-radius:10px;">
+          <div class="is-size-7 has-text-grey" style="margin-bottom:.25rem;">Initial step — <span class="has-text-weight-semibold">Adding-knowledge</span></div>
+          <div class="is-family-monospace" style="white-space:pre-wrap;"> Then, the quadrilateral is split into two triangles: one with vertices (-1, 0), (0, 1), (2, 0) and another with vertices (-1, 0), (2, 0), (0, -3).  Let me calculate the area of each triangle and add them. 
+
+First triangle: (-1, 0), (0, 1), (2, 0)
+
+Using the formula for the area of a triangle with coordinates: 1/2 |x1(y2 - y3) + x2(y3 - y1) + x3(y1 - y2)|
+
+Plugging in the points:
+
+x1 = -1, y1 = 0
+
+x2 = 0, y2 = 1
+
+x3 = 2, y3 = 0
+
+So,
+
+Area = 1/2 | (-1)(1 - 0) + 0(0 - 0) + 2(0 - 1) |
+
+= 1/2 | (-1)(1) + 0 + 2(-1) |
+
+= 1/2 | -1 + 0 - 2 |
+
+= 1/2 | -3 | = 1/2 * 3 = 1</div>
+        </div>
+      </div>
+    
+      <div class="box" style="border-radius:12px; box-shadow:0 3px 10px rgba(0,0,0,.05);">
+        <div class="is-flex is-align-items-center is-justify-content-space-between" style="gap:.75rem; flex-wrap:wrap;">
+          <div class="is-size-6 has-text-weight-semibold">Adding-knowledge example <span class="has-text-grey"> </span></div>
+          <div>
+            <span class="tag is-light">Label</span>
+            <span class="tag is-dark is-light has-text-weight-semibold">Adding-knowledge</span>
+          </div>
+        </div>
+        <div class="notification is-light" style="margin:1rem 0 .75rem; border-left:6px solid #3273dc; border-radius:10px;">
+          <div class="is-size-7 has-text-grey" style="margin-bottom:.25rem;">Context (last two sentences)</div>
+          <div class="is-family-monospace" style="white-space:pre-wrap;">Let me calculate the area of each triangle and add them. First triangle: (-1, 0), (0, 1), (2, 0)
+
+Using the formula for the area of a triangle with coordinates: 1/2 |x1(y2 - y3) + x2(y3 - y1) + x3(y1 - y2)|
+
+Plugging in the points:
+
+x1 = -1, y1 = 0
+
+x2 = 0, y2 = 1
+
+x3 = 2, y3 = 0
+
+So,
+
+Area = 1/2 | (-1)(1 - 0) + 0(0 - 0) + 2(0 - 1) |
+
+= 1/2 | (-1)(1) + 0 + 2(-1) |
+
+= 1/2 | -1 + 0 - 2 |
+
+= 1/2 | -3 | = 1/2 * 3 = 1.5</div>
+        </div>
+        <div class="notification is-danger is-light" style="margin:0; border-left:6px solid #ff3860; border-radius:10px;">
+          <div class="is-size-7 has-text-grey" style="margin-bottom:.25rem;">Initial step — <span class="has-text-weight-semibold">Adding-knowledge</span></div>
+          <div class="is-family-monospace" style="white-space:pre-wrap;">
+
+Second triangle: (-1, 0), (2, 0), (0, -3)
+
+Again, using the same formula:
+
+x1 = -1, y1 = 0
+
+x2 = 2, y2 = 0
+
+x3 = 0, y3 = -3
+
+Area = 1/2 | (-1)(0 - (-3)) + 2((-3) - 0) + 0(0 - 0) |
+
+= 1/2 | (-1)(3) + 2(-3) + 0 |
+
+= 1/2 | -3 -6 + 0 |
+
+= 1/2 | -9 | = 1/2 * 9 = 4. 5
+
+Adding both areas: 1. 5 + 4. 5 = 6
+
+Okay, so that&#x27;s the same result as before</div>
+        </div>
+      </div>
+    
+    </div>
+  </div>
+</section>
+
+
+
+  <!-- BIBTEX -->
+  <section class="section" id="bibtex">
+    <div class="container">
+      <h2 class="section-title">BibTeX</h2>
+      <div class="content-text">
+        <pre class="bibtex">@article{zhao2025trueThinking,
+  title={Can Aha Moments Be Fake? Identifying True and Decorative Thinking Steps in Chain-of-Thought},
+  author={Zhao, Jiachen and Sun, Yiyou and Shi, Weiyan and Song, Dawn},
+  journal={arXiv preprint arXiv:xxxx.xxxxx},
+  year={2025}
+}</pre>
+      </div>
+    </div>
+  </section>
+
+
+
+
+
+
+
+
+
+
+  <footer class="footer">
+    <div class="content has-text-centered">
+      <p>© 2025 — True vs Decorative Thinking</p>
+    </div>
+  </footer>
+</body>
+</html>
+
+
+
