@@ -2,9 +2,9 @@
 
 This repository contains the official implementation for the paper **"LLMs Encode Harmfulness and Refusal Separately"**. Our research analyzes the step-wise causality to examine the faithfulness of reasoning in CoT and reveals a steering direction to mediate true thinking in LLMs.
 
-- [Paper](https://arxiv.org/abs/2507.11878)
-- [Website](https://chats-lab.github.io/LLMs_Encode_Harmfulness_Refusal_Separately/)
-- [Blog](https://www.lesswrong.com/posts/gzNe2Grj2KksvzHWM/llms-encode-harmfulness-and-refusal-separately)
+- [Paper]()
+- [Website](https://andotalao24.github.io/Identify_true_decorative_thinking/)
+- [Blog]()
 
 
 ### Key Findings
