@@ -3,7 +3,7 @@
 
 MODEL="nemotron"
 MODEL_SIZE="1.5b"
-INPUT="data/output_amc_nemotron9b_right.jsonl"
+INPUT="data/output_aime_nemotron1d5b_correct.jsonl.jsonl"
 USER_TAG="\n The final answer is \\boxed{"
 
 OUTPUT_FILE="output/checkpoint_analysis_aime_nemotron1d5b_right_no_perturb.jsonl"
