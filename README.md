@@ -14,7 +14,13 @@ Identifying True and Decorative Thinking Steps in Chain-of-Thought"**. Our resea
 
 ##  Project Structure
 
-
+```
+├── data/  
+│ ├── pt/ # example directions extracted  
+│ ├── steer/ # test data for steering  
+│ └──  # input data of math reasoning  
+├── src/   # core implementation files
+```
 
 ## End-to-End Workflow
 
