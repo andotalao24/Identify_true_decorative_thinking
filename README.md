@@ -10,7 +10,7 @@ Identifying True and Decorative Thinking Steps in Chain-of-Thought"**. Our resea
 
 ### Key Findings
 
-
+We analyze the causal contribution of each reasoning step in a Chain-of-Thought (CoT) to evaluate its faithfulness with respect to the model’s final prediction. Our findings reveal that while some steps are true-thinking steps: faithfully reflected in the model's internal computation and exerting strong causal influence on its prediction: the majority of CoT steps are decorative, exhibiting minimal causal impact and not genuinely used by the model during inference. Furthermore, we show that true thinking is encoded as a steerable latent variable in the model’s hidden representations. By steering along a simple linear direction in the latent space, we can control whether the model internally engages with or disregards a verbalized step during reasoning.
 
 ##  Project Structure
 
@@ -26,7 +26,7 @@ Identifying True and Decorative Thinking Steps in Chain-of-Thought"**. Our resea
 
 The typical experiment proceeds through the following stages:
 
-1. **Baseline generation (`run_inference_vllm.sh`)** – produce model reasoning traces with vLLM.
+1. **Baseline generation (`run_inference_vllm.sh`)** – produce model reasoning traces.
 2. **Early-exit checkpoint sweep (`run_ckpt_no_perturb.sh`)** – record internal checkpoints without perturbations.
 3. **Perturbed checkpoint analysis (`run_checkpoint_analysis.sh`)** – introduce controlled perturbations per reasoning step.
 4. **TrueThinking scoring (`tts.py`)** – compute per-step TTS and sample low/high TTS examples.
