@@ -35,7 +35,11 @@ The typical experiment proceeds through the following stages:
 
 A demo for steering with the TrueThinking direction is in `src/demo_steering.ipynb` 
 
+
+
+
 ## Step-wise Causality Analysis
+
 
 ```
 sh run_ckpt_no_perturb.sh
@@ -64,8 +68,7 @@ d_perturb_s = read_jsonl("output/checkpoint_analysis_math_nemotron1d5b_100_add_s
 d_perturb_s_c = read_jsonl("output/checkpoint_analysis_math_nemotron1d5b_100_add_small_all_num_perturb_s_c.jsonl")
 d_perturb_c = read_jsonl("output/checkpoint_analysis_math_nemotron1d5b_100_add_small_all_num_perturb_c.jsonl")
 ```
-
-Then run the file. The script filters for cases with low/high TTS and creates two JSONL files (defaults: `low_tts_steps.jsonl`, `high_tts_steps.jsonl`). These files drive the direction extraction step.
+These files are used to compute ATE(1) and ATE(0) in TTS. Then run the file. The script filters for cases with low/high TTS and creates two JSONL files (defaults: `low_tts_steps.jsonl`, `high_tts_steps.jsonl`). These files drive the direction extraction step.
 
 ## TrueThinking Direction
 
