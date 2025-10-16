@@ -14,28 +14,7 @@ Identifying True and Decorative Thinking Steps in Chain-of-Thought"**. Our resea
 
 ##  Project Structure
 
-```
-data/
 
-src/
-├── Core Scripts
-│   ├── extract_hidden.py          # Extract hidden states from LLMs
-│   ├── intervention.py            # Controlled text generation with interventions
-│   ├── inference.py               # Model inference on datasets
-│   ├── eval.py                    # Evaluation utilities
-│   ├── utils.py                   # Helper functions
-│   ├── template_inversion.py      # Templates for reply inversion task
-│   ├── run_llama_guard.py         # LlamaGuard evaluation
-│   └── classifier.ipynb           # Jupyter notebook for latent guard
-|
-└── Shell Scripts
-|   ├── complete_intervene.sh      # Full intervention pipeline
-|   ├── run_diff_mean.sh           # Hidden state extraction 
-│   └── run_inference.sh           # Inference pipeline
-│
-└── run/
-    pt files #example extracted directions and hidden states
-```
 
 ## End-to-End Workflow
 
