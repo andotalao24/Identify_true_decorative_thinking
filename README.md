@@ -1,27 +1,40 @@
-# TrueThinking Reasoning Pipeline
+# Identifying True and Decorative Thinking Steps in CoT
 
-Tools for extracting, scoring, and steering the reasoning traces of language models. The workflow estimates **TrueThinking Scores (TTS)** for individual reasoning steps, derives steering directions from high/low TTS examples, and applies those directions to intervene on future generations.
+This repository contains the official implementation for the paper **"LLMs Encode Harmfulness and Refusal Separately"**. Our research analyzes the step-wise causality to examine the faithfulness of reasoning in CoT and reveals a steering direction to mediate true thinking in LLMs.
 
-## Prerequisites
+- [Paper](https://arxiv.org/abs/2507.11878)
+- [Website](https://chats-lab.github.io/LLMs_Encode_Harmfulness_Refusal_Separately/)
+- [Blog](https://www.lesswrong.com/posts/gzNe2Grj2KksvzHWM/llms-encode-harmfulness-and-refusal-separately)
 
-- Python 3.10+ with `pip`
-- CUDA-capable GPU with sufficient VRAM for the chosen model size
-- (Recommended) bash-compatible shell even on Windows (e.g., Git Bash) to run the helper scripts
-- Install Python dependencies before running any stage:
 
-```bash
-pip install -r requirements.txt
+### Key Findings
+
+
+
+##  Project Structure
+
 ```
+data/
 
-## Repository Layout
-
-- `data/` – input prompts, evaluation splits, and perturbation test sets
-- `output/` – JSONL artifacts from inference, checkpoint analysis, and steering runs
-- `out_pt/` – serialized steering vectors and temporary tensors
-- `inference_vllm.py`, `inference_checkpoint_analysis.py` – core generation and checkpoint analysis scripts
-- `tts.py`, `utils_tts.py` – utilities for computing TTS and sampling high/low steps
-- `extract_hidden.py`, `intervention.py` – feature extraction and intervention logic
-- `run_*.sh` – opinionated entrypoints that chain the Python modules for common experiments
+src/
+├── Core Scripts
+│   ├── extract_hidden.py          # Extract hidden states from LLMs
+│   ├── intervention.py            # Controlled text generation with interventions
+│   ├── inference.py               # Model inference on datasets
+│   ├── eval.py                    # Evaluation utilities
+│   ├── utils.py                   # Helper functions
+│   ├── template_inversion.py      # Templates for reply inversion task
+│   ├── run_llama_guard.py         # LlamaGuard evaluation
+│   └── classifier.ipynb           # Jupyter notebook for latent guard
+|
+└── Shell Scripts
+|   ├── complete_intervene.sh      # Full intervention pipeline
+|   ├── run_diff_mean.sh           # Hidden state extraction 
+│   └── run_inference.sh           # Inference pipeline
+│
+└── run/
+    pt files #example extracted directions and hidden states
+```
 
 ## End-to-End Workflow
 
@@ -34,44 +47,33 @@ The typical experiment proceeds through the following stages:
 5. **Direction extraction (`run_diff_mean.sh`)** – derive TrueThinking steering vectors from the sampled steps.
 6. **Intervention (`complete_intervene.sh`)** – apply the steering vector during generation to nudge reasoning.
 
-Each stage consumes the artifacts from the previous step; details are below.
+A demo for steering with the TrueThinking direction is in `src/demo_steering.ipynb` 
 
-## Stage 1 – Baseline Inference
+## Step-wise Causality Analysis
 
-```bash
-bash run_inference_vllm.sh
+```
+sh run_ckpt_no_perturb.sh
 ```
 
-Key arguments (see `run_inference_vllm.sh`) control the backbone model, tensor parallelism, sampling behavior, and input file (default: `data/amc.jsonl`). The script writes a JSONL file such as `output/output_amc_nemotron1d5b.jsonl` with complete reasoning transcripts.
+This step replays the baseline runs with `inference_checkpoint_analysis.py` while disabling perturbations. The output (`output/checkpoint_analysis_*_no_perturb.jsonl`) captures the model state after each reasoning checkpoint and is required for the perturbation analyses. Adjust the script variables (`MODEL`, `MODEL_SIZE`, `INPUT`) to match the dataset generated in Stage 1.
 
-## Stage 2 – Early-Exit Checkpoints
+### Perturbed Checkpoint Analysis
 
-```bash
-bash run_ckpt_no_perturb.sh
 ```
-
-This step replays the baseline runs with `inference_checkpoint_analysis.py` while disabling perturbations. The output (`output/checkpoint_analysis_*_no_perturb.jsonl`) captures the model state after each reasoning checkpoint and is required for the perturbation analyses.
-
-Adjust the script variables (`MODEL`, `MODEL_SIZE`, `INPUT`, `USER_TAG`) to match the dataset generated in Stage 1.
-
-## Stage 3 – Perturbed Checkpoint Analysis
-
-```bash
-bash run_checkpoint_analysis.sh
+sh run_checkpoint_analysis.sh
 ```
 
 The script sweeps over random seeds and perturbation modes (e.g., random number replacements) to produce multiple JSONL runs under different interventions. By default outputs land in `output/ckpt/` and `output/checkpoint_analysis_*_perturb_*.jsonl`.
 
 Tips:
-
 - Ensure `INPUT` points to the no-perturb file from Stage 2.
-- Tune `--right` to control how many checkpoints are processed.
-- The script empties CUDA caches between runs; keep it if you experience OOM issues.
+- Tune `--max_checkpoint_idx` to control how many checkpoints are processed.
 
-## Stage 4 – TrueThinking Score Extraction
 
-Edit the top of `tts.py` so that the four `read_jsonl` calls reference the outputs from Stages 2–3:
+### TrueThinking Score Extraction
 
+Edit the top of `tts.py` so that the four `read_jsonl` calls reference the outputs from the previous stage:
+For example 
 ```python
 d_no_perturb = read_jsonl("output/checkpoint_analysis_math_nemotron1d5b_right_no_perturb.jsonl")
 d_perturb_s = read_jsonl("output/checkpoint_analysis_math_nemotron1d5b_100_add_small_all_num_perturb_s.jsonl")
@@ -79,48 +81,26 @@ d_perturb_s_c = read_jsonl("output/checkpoint_analysis_math_nemotron1d5b_100_add
 d_perturb_c = read_jsonl("output/checkpoint_analysis_math_nemotron1d5b_100_add_small_all_num_perturb_c.jsonl")
 ```
 
-Then run:
+Then run the file. The script filters for cases with low/high TTS and creates two JSONL files (defaults: `low_tts_steps.jsonl`, `high_tts_steps.jsonl`). These files drive the direction extraction step.
 
-```bash
-python tts.py
-```
-
-The script filters for cases with low/high TTS and creates two JSONL files (defaults: `low_tts_steps.jsonl`, `high_tts_steps.jsonl`). These files drive the direction extraction step.
-
-## Stage 5 – TrueThinking Direction
+## TrueThinking Direction
 
 Update `run_diff_mean.sh` so that `harmful_pth` / `harmless_pth` target the low/high TTS files created in Stage 4, then run:
 
-```bash
-bash run_diff_mean.sh
+```
+sh run_diff_mean.sh
 ```
 
-Internally the script invokes `extract_hidden.py`, computes hidden-state averages for the two cohorts, and writes a steering vector (e.g., `out_pt/nemotron-1d5b-amc-dir-uf-ff.pt`). Temporary tensors are stored in `out_pt/tmp.pt` to allow inspection if needed.
+Internally the script invokes `extract_hidden.py`, computes hidden-state averages for the two cohorts, and writes a steering vector (e.g., `out_pt/nemotron-1d5b-amc-dir-uf-ff.pt`). By default, the sh file generates the reverse direction from faithful steps to the unfaithful ones.
 
-For full sweeps over multiple thresholds, see `run_combined_pipeline.sh` which chains direction extraction and interventions across several low/high TTS cutoffs.
+### Steering Intervention
 
-## Stage 6 – Steering Intervention
-
-```bash
-bash complete_intervene.sh
+```
+sh complete_intervene.sh
 ```
 
-The script loads the steering vector from Stage 5 (`--intervention_vector`) and runs `intervention.py` against a perturbation test set (`data/math_nemotron_perturb_rand_small_test-rand100.json` by default). Results are written to `output/steer/`, capturing both reasoning traces and intervention metadata.
+The script loads the steering vector from the previous (`--intervention_vector`) and runs `intervention.py` against a steering test set (engagement test or disengagement test). 
+Adjust the layer range (`--layer_s`, `--layer_e`) to experiment with where the steering vector is injected. For each layer, there will be an according output file generated.
 
-Adjust the layer range (`--layer_s`, `--layer_e`), context-masking flags, and decoding limits to experiment with where and how the steering vector is injected.
 
-## Inspecting & Evaluating Results
 
-- `utils_eval.py` offers helpers for accuracy, calibration, and consistency checks.
-- `demo_steering.ipynb` walks through an interactive analysis of steering outcomes.
-- `web/` hosts a lightweight visualization app for qualitative review.
-
-## Troubleshooting
-
-- **OOM during checkpoint analysis** – Reduce batch size (`--batch_size`), shorten `--right`, or run fewer seeds per pass.
-- **Mismatched case counts in `tts.py`** – Confirm all four JSONL inputs stem from the same baseline set and share identical ordering.
-- **Slow feature extraction** – Use the sampler flags (`--random_sample_harmful`) in `get_diff_mean.sh` to limit tokens processed during direction estimation.
-
-## License
-
-Released under the terms specified in `LICENSE`. Review upstream model licenses when distributing derived artifacts.
