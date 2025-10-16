@@ -41,19 +41,17 @@ A demo for steering with the TrueThinking direction is in `src/demo_steering.ipy
 sh run_ckpt_no_perturb.sh
 ```
 
-This step replays the baseline runs with `inference_checkpoint_analysis.py` while disabling perturbations. The output (`output/checkpoint_analysis_*_no_perturb.jsonl`) captures the model state after each reasoning checkpoint and is required for the perturbation analyses. Adjust the script variables (`MODEL`, `MODEL_SIZE`, `INPUT`) to match the dataset generated in Stage 1.
-
-### Perturbed Checkpoint Analysis
+This step replays the baseline runs with `inference_checkpoint_analysis.py` while disabling perturbations. Each step is a checkpoint. The output (`output/checkpoint_analysis_*_no_perturb.jsonl`) captures the model state after each reasoning checkpoint and is required for the perturbation analyses. Adjust the script variables (`MODEL`, `MODEL_SIZE`, `INPUT`).
 
 ```
 sh run_checkpoint_analysis.sh
 ```
 
-The script sweeps over random seeds and perturbation modes (e.g., random number replacements) to produce multiple JSONL runs under different interventions. By default outputs land in `output/ckpt/` and `output/checkpoint_analysis_*_perturb_*.jsonl`.
+The script produces multiple JSONL runs under different perturbation (i.e., perturbing the step only; perturbing the context before the step; perturbing both the context and the step). 
 
 Tips:
 - Ensure `INPUT` points to the no-perturb file from Stage 2.
-- Tune `--max_checkpoint_idx` to control how many checkpoints are processed.
+- Tune `--max_checkpoint_idx` to control how many checkpoints are analyzed as there can be more than 1000 steps in a very tedious CoT. The output file can be very large.
 
 
 ### TrueThinking Score Extraction
@@ -77,7 +75,7 @@ Update `run_diff_mean.sh` so that `harmful_pth` / `harmless_pth` target the low/
 sh run_diff_mean.sh
 ```
 
-Internally the script invokes `extract_hidden.py`, computes hidden-state averages for the two cohorts, and writes a steering vector (e.g., `out_pt/nemotron-1d5b-amc-dir-uf-ff.pt`). By default, the sh file generates the reverse direction from faithful steps to the unfaithful ones.
+The script invokes `extract_hidden.py`, computes hidden-state averages for the two cohorts, and writes a steering vector (e.g., `out_pt/nemotron-1d5b-amc-dir-uf-ff.pt`). By default, the sh file generates the reverse direction from faithful steps to the unfaithful ones.
 
 ### Steering Intervention
 
