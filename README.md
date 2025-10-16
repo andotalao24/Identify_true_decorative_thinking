@@ -17,7 +17,7 @@ We analyze the causal contribution of each reasoning step in a Chain-of-Thought 
 ```
 ├── data/  
 │ ├── pt/ # example directions extracted  
-│ ├── steer/ # test data for steering  
+│ ├── steer_test/ # test data for steering  
 │ └──  # input data of math reasoning  
 ├── src/   # core implementation files
 ```
