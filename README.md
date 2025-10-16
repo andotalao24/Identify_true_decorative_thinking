@@ -1,6 +1,7 @@
 # Identifying True and Decorative Thinking Steps in CoT
 
-This repository contains the official implementation for the paper **"LLMs Encode Harmfulness and Refusal Separately"**. Our research analyzes the step-wise causality to examine the faithfulness of reasoning in CoT and reveals a steering direction to mediate true thinking in LLMs.
+This repository contains the official implementation for the paper **"Can Aha Moments Be Fake?
+Identifying True and Decorative Thinking Steps in Chain-of-Thought"**. Our research analyzes the step-wise causality to examine the faithfulness of reasoning in CoT and reveals a steering direction to mediate true thinking in LLMs.
 
 - [Paper]()
 - [Website](https://andotalao24.github.io/Identify_true_decorative_thinking/)
