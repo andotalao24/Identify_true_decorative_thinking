@@ -89,4 +89,14 @@ The script loads the steering vector from the previous (`--intervention_vector`)
 Adjust the layer range (`--layer_s`, `--layer_e`) to experiment with where the steering vector is injected. For each layer, there will be an according output file generated.
 
 
+For intervention experiments,  run complete_intervene.sh  
+
+Key parameters:
+- `--intervention_vector`: Path to steering vectors
+- `--reverse_intervention`: Whether to reverse intervention (1/0)
+- `--coeff_select`: The coefficient for scaling intervention strength, though we find scaling not too useful
+- `--step_key`: the step we apply steering to, specified in the input data json file.
+- `--context_key`: the context before the step, specified in the input data json file. 
+
+
 
