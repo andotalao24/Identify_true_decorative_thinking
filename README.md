@@ -1,5 +1,8 @@
 # Identifying True and Decorative Thinking Steps in CoT
 
+**WORK IN PROCESS** 
+
+
 This repository contains the official implementation for the paper **"Can Aha Moments Be Fake?
 Identifying True and Decorative Thinking Steps in Chain-of-Thought"**. Our research analyzes the step-wise causality to examine the faithfulness of reasoning in CoT and reveals a steering direction to mediate true thinking in LLMs.
 
