@@ -1,6 +1,5 @@
-# Identifying True and Decorative Thinking Steps in CoT
+# Can Aha Moments be Fake? Identifying True and Decorative Thinking Steps in CoT
 
-**WORK IN PROCESS** 
 
 
 This repository contains the official implementation for the paper **"Can Aha Moments Be Fake?
