@@ -5,7 +5,7 @@
 This repository contains the official implementation for the paper **"Can Aha Moments Be Fake?
 Identifying True and Decorative Thinking Steps in Chain-of-Thought"**. Our research analyzes the step-wise causality to examine the faithfulness of reasoning in CoT and reveals a steering direction to mediate true thinking in LLMs.
 
-- [Paper]()
+- [Paper](https://arxiv.org/abs/2510.24941)
 - [Website](https://andotalao24.github.io/Identify_true_decorative_thinking/)
 - [Blog]()
 
@@ -105,5 +105,13 @@ Key parameters:
 
 ## Citing
 ```bibtex  
-@inproceedings{
+@misc{zhao2025ahamomentsfakeidentifying,
+      title={Can Aha Moments Be Fake? Identifying True and Decorative Thinking Steps in Chain-of-Thought}, 
+      author={Jiachen Zhao and Yiyou Sun and Weiyan Shi and Dawn Song},
+      year={2025},
+      eprint={2510.24941},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2510.24941}, 
+}
 ``` 
