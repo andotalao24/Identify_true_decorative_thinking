@@ -2,7 +2,7 @@
 
 
 
-This repository contains the official implementation for the paper **"Can Aha Moments Be Fake?
+This repository contains the official implementation for our project **"Can Aha Moments Be Fake?
 Identifying True and Decorative Thinking Steps in Chain-of-Thought"**. Our research analyzes the step-wise causality to examine the faithfulness of reasoning in CoT and reveals a steering direction to mediate true thinking in LLMs.
 
 - [Paper](https://arxiv.org/abs/2510.24941)
