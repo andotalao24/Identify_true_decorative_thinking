@@ -6,7 +6,7 @@ This repository contains the implementation for our project **"Can Aha Moments B
 Identifying True and Decorative Thinking Steps in Chain-of-Thought"**. Our research analyzes the step-wise causality to examine the faithfulness of reasoning in CoT and reveals a steering direction to mediate true thinking in LLMs.
 
 - [Paper](https://arxiv.org/abs/2510.24941)
-- [Blog]()
+- [Blog](https://www.lesswrong.com/posts/L9sE9qQgeh7cTQWkM/can-aha-moments-be-fake-identifying-true-and-decorative)
 
 
 ### Key Findings
