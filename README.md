@@ -7,7 +7,7 @@ Identifying True and Decorative Thinking Steps in Chain-of-Thought"**. Our resea
 
 - [Paper](https://arxiv.org/abs/2510.24941)
 - [Blog](https://www.lesswrong.com/posts/L9sE9qQgeh7cTQWkM/can-aha-moments-be-fake-identifying-true-and-decorative)
-
+- [Web](https://andotalao24.github.io/Identify_true_decorative_thinking/)  
 
 ### Key Findings
 
