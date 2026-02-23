@@ -165,25 +165,34 @@ undermines both the efficiency of LLM reasoning and the trustworthiness of CoT.
     <h2 class="section-title">True-Thinking Score (TTS)</h2>
     <div class="content-text">
       <p>
-        The <strong>True-Thinking Score (TTS)</strong> measures how much a reasoning step <code><em>s</em></code> contributes causally to the model’s prediction. 
-       By adapting the causality evaluation framework of Average Treatment Effect (ATE), we compare the model’s confidence when the step is kept (<code>X=1</code>) versus when it is replaced by a perturbed version (<code>X=0</code>) (e.g., adding small random offsets to the numbers in the step), 
-        under both intact context (<code>C=1</code>) and perturbed context (<code>C=0</code>). Formally:
+        We use <strong>Average Treatment Effect (ATE)</strong> to measure the causal impact of one reasoning step <code><em>s</em></code>.
+        Let <code>X=1</code> mean keeping the original step and <code>X=0</code> mean replacing it with a minimally perturbed version.
+        For each setting, we score the model by its confidence on the reference answer <code>y*</code> (from early-exit on the full CoT):
       </p>
 
       <div class="box has-text-centered" style="margin:1rem auto; max-width:600px;">
-        <p><strong>TTS(s) = 0.5 × ( |ATE(1)| + |ATE(0)| )</strong></p>
+        <p><strong>ATE(c) = S1(c) - S0(c)</strong></p>
         <p>
           <strong>
-            TTS(s) = 0.5 × ( | P(Y=1 | C=1, do(X=1)) − P(Y=1 | C=1, do(X=0)) | <br>
-            + | P(Y=1 | C=0, do(X=1)) − P(Y=1 | C=0, do(X=0)) | )
+            Sx(c) = P(y* | C=c, do(X=x)), &nbsp; x,c ∈ {0,1}
           </strong>
         </p>
       </div>
 
       <p>
-        Here, <code>X=1</code> means the model sees the original step, while <code>X=0</code> means the step is perturbed. 
-        <code>C=1</code> keeps the steps before <code><em>s</em></code> intact as a step may affect the model's prediction jointly with those context steps; <code>C=0</code> perturbs those context steps to measure the impact of the step on the model's prediction in isolation. The final score is the average of the two ATE scores.  
-        Intuitively, a causally important step should introduce a large change in the model's confidence due to the perturbation we apply. A high TTS indicates the step is truly used by the model; a low TTS suggests it is decorative. 
+        We evaluate two context regimes for the prefix before <code><em>s</em></code>:
+        <code>C=1</code> (<strong>intact context</strong>) tests whether the step is <strong>necessary</strong> when other supporting steps remain; 
+        <code>C=0</code> (<strong>perturbed context</strong>) tests whether the step is <strong>sufficient</strong> when that support is weakened.
+        This separates "needed with support" from "helpful on its own."
+      </p>
+
+      <div class="box has-text-centered" style="margin:1rem auto; max-width:650px;">
+        <p><strong>TTS(s) = 0.5 × ( |ATE<sub>nec</sub>(1)| + |ATE<sub>suf</sub>(0)| )</strong></p>
+      </div>
+
+      <p>
+        We take absolute ATE values to measure <em>magnitude</em> of causal influence (not direction).
+        Higher TTS means the model truly uses this step in its computation; lower TTS means the step is more likely decorative.
       </p>
     </div>
   </div>
@@ -446,7 +455,7 @@ undermines both the efficiency of LLM reasoning and the trustworthiness of CoT.
 
 <section class="section" id="initial-step-examples">
   <div class="container">
-    <h2 class="section-title">Labeled Initial-Step Examples</h2>
+    <h2 class="section-title">Examples of Decorative Steps</h2>
     <div class="content-text">
 
       <div class="box" style="border-radius:12px; box-shadow:0 3px 10px rgba(0,0,0,.05);">
