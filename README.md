@@ -1,6 +1,6 @@
 # Can Aha Moments be Fake? Identifying True and Decorative Thinking Steps in CoT
 
-
+**News:** True-Thinking Score is added to the cookbook in [Tinker](https://tinker-docs.thinkingmachines.ai/cookbook/recipes/true-thinking-score/).
 
 This repository contains the implementation for our project **"Can Aha Moments Be Fake?
 Identifying True and Decorative Thinking Steps in Chain-of-Thought"**. Our research analyzes the step-wise causality to examine the faithfulness of reasoning in CoT and reveals a steering direction to mediate true thinking in LLMs.
