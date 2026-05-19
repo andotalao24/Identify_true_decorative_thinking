@@ -101,6 +101,9 @@ Key parameters:
 - `--context_key`: the context before the step, specified in the input data json file. 
 
 
+### Application  
+
+TTS can be incoporated into RL training to reduce CoT length. check  https://github.com/perfect7613/reasoning-honesty-lab
 
 ## Citing
 ```bibtex  
